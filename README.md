@@ -44,4 +44,4 @@ Building an Expense Tracker with category filtering and totals.
 ---
 
 **Part of my journey from zero to AI/ML developer.**  
-Follow along: @itsrizmohammad | linkedin.com/in/mohammedriz# Contact-Manager
+Follow along: @itsrizmohammad | linkedin.com/in/mohammedriz
