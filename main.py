@@ -41,7 +41,59 @@ def search_contact(search_term):
     except FileNotFoundError:
         print("No contacts to search")
 
-    
+def delete_contact(search_term):
+    """ Delete a contact """
+    try:
+        with open("contact.txt", "r") as f:
+            lines = f.readlines()
+
+        matches = []
+        for i, line in enumerate(lines):
+            name, phone = line.strip().split(", ")
+            if search_term.lower() in name.lower():
+                matches.append((i, name, phone))
+        
+        if not matches:
+            print(f"No match found for the {search_term}")
+        
+        else: print("Matches Found: ")
+
+        for idx, (line_index, name, phone) in enumerate(matches, 1):
+            print(f"{idx}, {name}, {phone}")
+
+        choice = input("Enter the number of the contact to be deleted (0 to cancel): ")
+
+        if not choice.isdigit():
+            print("Invalid input!")
+            return
+        choice = int(choice)
+
+        if choice == 0:
+            return
+        
+        elif choice < 1 or choice > len(matches):
+            print("Invalid choice")
+            return 
+        
+        line_index_to_delete = matches[choice - 1][0]
+        name, phone = matches[choice - 1][1], matches[choice - 1][2]
+
+        confirm = input(f"Are you sure to delete the selected contact permanently (y/n): )").lower().strip()
+        if confirm != "y":
+            print("Deletetion Cancelled")
+            return 
+        
+        else:
+            lines.pop(line_index_to_delete)
+            print(f"{name}-{phone} has be deleted successfully!")
+
+        with open("contact.txt", "w") as f:
+            for line in lines:
+                f.write(line)
+
+    except FileNotFoundError:
+        print("No contacts to found")
+
 def main():
     """ Main program loop """
     while True:
@@ -49,9 +101,10 @@ def main():
         print("1. Add Contact")
         print("2. Show All")
         print("3. Search")
-        print("4. Exit")
+        print("4. Delete")
+        print("5. Exit")
 
-        choice = input("\nChoose (1-4): ")
+        choice = input("\nChoose (1-5): ")
 
         if choice == "1":
             name = input("Name: ")
@@ -66,6 +119,10 @@ def main():
             search_contact(search_term)
 
         elif choice == "4":
+            search_term = input("Enter name to delete: ")
+            delete_contact(search_term)
+
+        elif choice == "5":
             print("Goodbye!")
             break
                 
